@@ -9,7 +9,7 @@ const pauseTime = 2000; // How long to wait before deleting
 
 function typeWriter() {
     const currentWord = words[wordIndex % words.length];
-    
+
     if (isDeleting) {
         text = currentWord.substring(0, text.length - 1);
     } else {
@@ -53,7 +53,7 @@ resizeCanvas();
 
 function animateWaves() {
     ctx.clearRect(0, 0, width, height);
-    
+
     // Config for the waves
     const waves = [
         { amplitude: 40, frequency: 0.002, speed: 0.01, color: 'rgba(92, 184, 255, 0.15)', offset: 0 },
@@ -82,3 +82,54 @@ function animateWaves() {
 
 // Start wave animation
 animateWaves();
+
+// --- 3. Cookie Consent Logic ---
+document.addEventListener("DOMContentLoaded", () => {
+    const cookieBanner = document.getElementById("cookie-banner");
+    const acceptBtn = document.getElementById("accept-cookies");
+    const declineBtn = document.getElementById("decline-cookies");
+
+    // Helper function to create a cookie
+    function setCookie(name, value, daysToExpire) {
+        const date = new Date();
+        date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+
+    // Helper function to check if a cookie exists
+    function getCookie(name) {
+        const cookieName = name + "=";
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const cookieArray = decodedCookie.split(';');
+
+        for (let i = 0; i < cookieArray.length; i++) {
+            let c = cookieArray[i].trim();
+            if (c.indexOf(cookieName) === 0) {
+                return c.substring(cookieName.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    // Check if the user has already answered the banner
+    const consent = getCookie("itellisecure_consent");
+
+    if (consent === "") {
+        // No cookie found, show the banner after a 1 second delay
+        setTimeout(() => {
+            cookieBanner.classList.add("show");
+        }, 1000);
+    }
+
+    // Event Listeners for the buttons
+    acceptBtn.addEventListener("click", () => {
+        setCookie("itellisecure_consent", "accepted", 30); // Remembers choice for 30 days
+        cookieBanner.classList.remove("show");
+    });
+
+    declineBtn.addEventListener("click", () => {
+        setCookie("itellisecure_consent", "declined", 30);
+        cookieBanner.classList.remove("show");
+    });
+});
