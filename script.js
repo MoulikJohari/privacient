@@ -1,135 +1,76 @@
-// --- 1. Typewriter Effect ---
-const words = ["Your Culture", "You!", "Your Business", "Your Team"];
-let wordIndex = 0;
-let isDeleting = false;
-let text = '';
-const typeSpeed = 100;
-const deleteSpeed = 50;
-const pauseTime = 2000; // How long to wait before deleting
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itellisecure - Cyber Security Awareness</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="consent-banner"></div>
+    <div id="teconsent">
+        <script type="text/javascript" async="async" src="https://consent.trustarc.com/v2/notice/vhlodh"></script>
+    </div>
+    <canvas id="waveCanvas"></canvas>
 
-function typeWriter() {
-    const currentWord = words[wordIndex % words.length];
+    <div class="top-bar">
+        <p><span>ℹ</span> Itellisecure is now offering free Phishing Simulation trials for enterprises. <a href="#">Try it free</a></p>
+    </div>
 
-    if (isDeleting) {
-        text = currentWord.substring(0, text.length - 1);
-    } else {
-        text = currentWord.substring(0, text.length + 1);
-    }
+    <header class="navbar">
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5cb8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>Itellisecure</span>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Products ⌄</a>
+            <a href="#">Resources</a>
+            <a href="#">ICICI Lombard</a>
+            <a href="#">Prudent Brokers</a>
+            <a href="#">Company ⌄</a>
+            <a href="#">Contact Us</a>
+        </nav>
+        <a href="#" class="btn-demo-small">Book a Demo &rarr;</a>
+    </header>
 
-    document.querySelector('.changing-text').innerHTML = text;
+    <main class="hero">
+        <div class="hero-content">
+            <h1>
+                Cyber Security Awareness<br>
+                Curated For <span class="changing-text"></span><span class="cursor">|</span>
+            </h1>
+            
+            <h2 class="subtitle-bold">Always Engaged. Always Cyber-Aware.</h2>
+            
+            <p class="description">
+                Itellisecure helps organizations humanize their cyber security and privacy awareness<br>
+                programs. We make security fun and engaging with programs curated just for you — based<br>
+                on your company's processes, culture, and risk profile.
+            </p>
 
-    let timer = isDeleting ? deleteSpeed : typeSpeed;
+            <div class="hero-buttons">
+                <a href="#" class="btn-primary">Schedule a Demo Today</a>
+                <a href="#" class="btn-secondary">Download Free Whitepaper</a>
+            </div>
 
-    if (!isDeleting && text === currentWord) {
-        timer = pauseTime;
-        isDeleting = true;
-    } else if (isDeleting && text === '') {
-        isDeleting = false;
-        wordIndex++;
-        timer = 500; // Slight pause before typing next word
-    }
+            <div class="stats-container">
+                <div class="stat-box">
+                    <h3>90%+</h3>
+                    <p>Attacks via Human Error</p>
+                </div>
+                <div class="stat-box">
+                    <h3>500+</h3>
+                    <p>Organizations Trained</p>
+                </div>
+                <div class="stat-box">
+                    <h3>98%</h3>
+                    <p>Engagement Rate</p>
+                </div>
+            </div>
+        </div>
+    </main>
 
-    setTimeout(typeWriter, timer);
-}
-
-// Start the typewriter loop
-typeWriter();
-
-
-// --- 2. Canvas Background Waves ---
-const canvas = document.getElementById('waveCanvas');
-const ctx = canvas.getContext('2d');
-
-let width, height;
-let time = 0;
-
-function resizeCanvas() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-}
-
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-function animateWaves() {
-    ctx.clearRect(0, 0, width, height);
-
-    // Config for the waves
-    const waves = [
-        { amplitude: 40, frequency: 0.002, speed: 0.01, color: 'rgba(92, 184, 255, 0.15)', offset: 0 },
-        { amplitude: 60, frequency: 0.0015, speed: 0.015, color: 'rgba(92, 184, 255, 0.1)', offset: Math.PI / 2 },
-        { amplitude: 30, frequency: 0.003, speed: 0.008, color: 'rgba(255, 255, 255, 0.05)', offset: Math.PI }
-    ];
-
-    waves.forEach(wave => {
-        ctx.beginPath();
-        ctx.moveTo(0, height / 2);
-
-        for (let x = 0; x < width; x++) {
-            // Calculate sine wave math
-            const y = height / 2 + Math.sin(x * wave.frequency + time * wave.speed + wave.offset) * wave.amplitude;
-            ctx.lineTo(x, y);
-        }
-
-        ctx.strokeStyle = wave.color;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-    });
-
-    time += 1;
-    requestAnimationFrame(animateWaves);
-}
-
-// Start wave animation
-animateWaves();
-
-// --- 3. Cookie Consent Logic ---
-document.addEventListener("DOMContentLoaded", () => {
-    const cookieBanner = document.getElementById("cookie-banner");
-    const acceptBtn = document.getElementById("accept-cookies");
-    const declineBtn = document.getElementById("decline-cookies");
-
-    // Helper function to create a cookie
-    function setCookie(name, value, daysToExpire) {
-        const date = new Date();
-        date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
-        const expires = "expires=" + date.toUTCString();
-        document.cookie = name + "=" + value + ";" + expires + ";path=/";
-    }
-
-    // Helper function to check if a cookie exists
-    function getCookie(name) {
-        const cookieName = name + "=";
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const cookieArray = decodedCookie.split(';');
-
-        for (let i = 0; i < cookieArray.length; i++) {
-            let c = cookieArray[i].trim();
-            if (c.indexOf(cookieName) === 0) {
-                return c.substring(cookieName.length, c.length);
-            }
-        }
-        return "";
-    }
-
-    // Check if the user has already answered the banner
-    const consent = getCookie("itellisecure_consent");
-
-    if (consent === "") {
-        // No cookie found, show the banner after a 1 second delay
-        setTimeout(() => {
-            cookieBanner.classList.add("show");
-        }, 1000);
-    }
-
-    // Event Listeners for the buttons
-    acceptBtn.addEventListener("click", () => {
-        setCookie("itellisecure_consent", "accepted", 30); // Remembers choice for 30 days
-        cookieBanner.classList.remove("show");
-    });
-
-    declineBtn.addEventListener("click", () => {
-        setCookie("itellisecure_consent", "declined", 30);
-        cookieBanner.classList.remove("show");
-    });
-});
+    <script src="script.js"></script>
+</body>
+</html>
